@@ -34,3 +34,6 @@ TODO
   - faster minDist computation (here brute-force = O(n²)
   - smarter point usage to avoid having to go through the points to split into xPts and yPts (or fix in original code)
 
+License
+-------
+Released under the [MIT License](http://www.opensource.org/licenses/MIT).
