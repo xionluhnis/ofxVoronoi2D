@@ -655,7 +655,7 @@ void VoronoiDiagramGenerator::cleanupEdges()
 
 }
 
-void VoronoiDiagramGenerator::pushGraphEdge(float x1, float y1, float x2, float y2)
+void VoronoiDiagramGenerator::pushGraphEdge(float x1, float y1, float x2, float y2, Site *s1, Site *s2)
 {
 	GraphEdge* newEdge = new GraphEdge;
 	newEdge->next = allEdges;
@@ -664,6 +664,13 @@ void VoronoiDiagramGenerator::pushGraphEdge(float x1, float y1, float x2, float 
 	newEdge->y1 = y1;
 	newEdge->x2 = x2;
 	newEdge->y2 = y2;
+	// NEW: site coordinates
+	if(newEdge->b1 = (s1 != NULL)){
+	    newEdge->s1 = s1->coord;
+	}
+	if(newEdge->b2 = (s2 != NULL)){
+	    newEdge->s2 = s2->coord;
+	}
 }
 
 
@@ -679,9 +686,9 @@ char * VoronoiDiagramGenerator::myalloc(unsigned n)
 /* for those who don't have Cherry's plot */
 /* #include <plot.h> */
 void VoronoiDiagramGenerator::openpl(){}
-void VoronoiDiagramGenerator::line(float x1, float y1, float x2, float y2)
+void VoronoiDiagramGenerator::line(float x1, float y1, float x2, float y2, Site *s1, Site *s2)
 {	
-	pushGraphEdge(x1,y1,x2,y2);
+	pushGraphEdge(x1,y1,x2,y2,s1,s2);
 
 }
 void VoronoiDiagramGenerator::circle(float x, float y, float radius){}
@@ -743,7 +750,7 @@ void VoronoiDiagramGenerator::plotinit()
 void VoronoiDiagramGenerator::clip_line( Edge *e)
 {
 	 Site *s1, *s2;
-	float x1=0,x2=0,y1=0,y2=0, temp = 0;;
+	float x1=0,x2=0,y1=0,y2=0;
 
 	x1 = e->reg[0]->coord.x;
 	x2 = e->reg[1]->coord.x;
@@ -849,7 +856,7 @@ void VoronoiDiagramGenerator::clip_line( Edge *e)
 	};
 	
 	//printf("\nPushing line (%f,%f,%f,%f)",x1,y1,x2,y2);
-	line(x1,y1,x2,y2);
+	line(x1,y1,x2,y2,e->reg[0],e->reg[1]); // s1,s2);
 }
 
 

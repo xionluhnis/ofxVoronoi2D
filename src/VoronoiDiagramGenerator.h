@@ -90,6 +90,8 @@ struct Edge
 struct GraphEdge
 {
 	float x1,y1,x2,y2;
+	Point s1, s2;
+	bool b1, b2;
 	 GraphEdge* next;
 };
 
@@ -133,6 +135,36 @@ public:
 		y1 = iteratorEdges->y1;
 		y2 = iteratorEdges->y2;
 
+		iteratorEdges = iteratorEdges->next;
+
+		return true;
+	}
+	
+	template <typename Point>
+	bool getNext(Point &e1, Point &e2, Point &s1, Point &s2, int &flag)
+	{
+		if(iteratorEdges == 0)
+			return false;
+		
+		e1.x = iteratorEdges->x1;
+		e2.x = iteratorEdges->x2;
+		e1.y = iteratorEdges->y1;
+		e2.y = iteratorEdges->y2;
+		flag = 0;
+		if(iteratorEdges->b1){
+		    ++flag;
+		    s1.x = iteratorEdges->s1.x;
+		    s1.y = iteratorEdges->s1.y;
+		    if(iteratorEdges->b2){
+		        ++flag;
+		        s2.x = iteratorEdges->s2.x;
+		        s2.y = iteratorEdges->s2.y;
+	        }
+		} else if(iteratorEdges->b2){
+		    ++flag;
+		    s1.x = iteratorEdges->s2.x;
+		    s1.y = iteratorEdges->s2.y;
+		}
 		iteratorEdges = iteratorEdges->next;
 
 		return true;
@@ -194,10 +226,10 @@ private:
 	void out_vertex( Site *v);
 	 Site *nextone();
 
-	void pushGraphEdge(float x1, float y1, float x2, float y2);
+	void pushGraphEdge(float x1, float y1, float x2, float y2, Site* s1, Site* s2);
 
 	void openpl();
-	void line(float x1, float y1, float x2, float y2);
+	void line(float x1, float y1, float x2, float y2, Site* s1, Site* s2);
 	void circle(float x, float y, float radius);
 	void range(float minX, float minY, float maxX, float maxY);
 
