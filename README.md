@@ -3,31 +3,33 @@ ofxVoronoi2D
 
 OpenFramework addon to use the 2D Voronoi implementation of Shane O Sullivans
 
+![image](ofxaddons_thumbnail.png)
+
 Usage
 -----
 Simply put:
-  0. Create
-  1. Computation from the seed points
-  2. Cell usage
-  3. Mesh usage
+  1. Create
+  2. Computation from the seed points
+  3. Cell usage
+  4. Mesh usage
 
 ```cpp
-// 0. Instance
+// 1. Instance
 ofxVoronoi2D voronoi;
 vector<ofVec2f> pts;
 // init pts
 // ...
 
-// 1. Voronoi computation
+// 2. Voronoi computation
 voronoi.compute(pts, ofRectangle(0, 0, ofGetWidth(), ofGetHeight()));
 
-// 2. Edge drawing
+// 3. Edge drawing
 for(ofxSegmentIterator it = voronoi.edges(); it; ++it){
   ofxSegment s = *it;
   ofLine(s.p1, s.p2);
 }
 
-// 3. Mesh usage
+// 4. Mesh usage
 ofMesh mesh;
 voronoi.buildMesh(mesh);
 mesh.setColorForIndices(0, mesh.getNumIndices(), ofFloatColor(1.0f, 1.0f, 1.0f));
@@ -37,7 +39,7 @@ for(unsigned int i = 0; i < mesh.getNumIndices(); i += 3)
 mesh.draw();
 ```
 
-See also the interactive example application in `example/`.
+See also the interactive example applications in `example-simple/` and `example-withUI/`.
 
 TODO
 ----
