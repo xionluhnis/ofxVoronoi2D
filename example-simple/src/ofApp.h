@@ -4,18 +4,18 @@
 #include "ofxVoronoi2D.h"
 
 class ofApp : public ofBaseApp{
-	public:
-		void setup();
-		void update();
-		void draw();
-		
-		void keyPressed(int key);
-		void mousePressed(int x, int y, int button);
+  public:
+    void setup();
+    void update();
+    void draw();
 
-    private:
-        ofxVoronoi2D voronoi;
-        vector<ofVec2f> pts;
-        ofMesh mesh;
-        unsigned int count;
-        int dispMode;
+    void keyPressed(int key);
+    void mousePressed(int x, int y, int button);
+
+  private:
+    ofxVoronoi2D voronoi;
+    vector<ofVec2f> pts;
+    ofMesh mesh;
+    unsigned int count;
+    int dispMode;
 };

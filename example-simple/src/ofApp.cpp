@@ -6,7 +6,9 @@ void ofApp::setup(){
   ofSetFrameRate(24);
   count = 0;
   dispMode = 0;
+  // ofEnableAntiAliasing();
   ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+  // ofEnableSmoothing();
   // voronoi.setMinDist(std::epsilon<float>());
 }
 
@@ -30,10 +32,9 @@ void ofApp::update(){
         ofRandom(1.0f), // G
         ofRandom(1.0f)  // B
       );
-      colors[mesh.getIndex(i)] = c;
-      for(int j = 1; j < 3; ++j){
-        colors[mesh.getIndex(i + j)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f);
-      }
+      colors[mesh.getIndex(i + 0)] = c; // cell center
+      colors[mesh.getIndex(i + 1)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
+      colors[mesh.getIndex(i + 2)] = ofFloatColor(1.0f, 1.0f, 1.0f, 0.0f); // cell border
     }
     for(unsigned int i = 0; i < M; ++i) mesh.addColor(colors[i]);
   }
