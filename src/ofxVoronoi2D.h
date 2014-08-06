@@ -104,44 +104,42 @@ public:
     ofxSegmentIterator edges() {
         return ofxSegmentIterator(&voro);
     }
-
-    /*
-    void buildMesh(ofMesh &mesh){
-      typedef unsigned int Index;
-
-      // register vertices
-      voro.resetIterator();
-      ofVec2f p[2];
-      ofVec2f s[2];
-      int sites;
-
-      // register triangles = (index triplets)
-      // Note: 1st index = voronoi cell center
-      voro.resetIterator();
-      while(voro.getNext(p[0], p[1], s[0], s[1], sites)){
-        std::cout << ". graph edge (" << sites << " sites)\n";
-        Index i = mesh.getVertices().size();
-        // std::cout << "idx " << mesh.getIndices().size();
-        // std::cout << ", vtx " << mesh.getVertices().size() << "\n";
-        mesh.addVertex(ofVec3f(p[0]));
-        mesh.addVertex(ofVec3f(p[1]));
-        // std::cout << "e0 " << p[0] << ", e1 " << p[1] << "\n";
-        for(Index j = 0; j < sites; ++j){
-          std::cout << "s" << j << " " << s[j] << "\n";
-          mesh.addVertex(ofVec3f(s[j]));
-          mesh.addTriangle(i + 2 + j, i, i + 1);
-        }
-      }
-      mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-    }
-    */
     
     /**
      * Build a mesh out of the Voronoi diagram
      *
      * @param mesh the mesh to append data to
      */
-    void buildMesh(ofMesh &mesh){
+    void buildMesh(ofMesh &mesh, bool uniqIndices = true){
+        if(uniqIndices) buildOptMesh(mesh);
+        else buildTrivialMesh(mesh);  
+    }
+
+    void setMinDist(float mdist) {
+      minDist = mdist;
+    }
+
+private:
+    VoronoiDiagramGenerator voro;
+    float minDist;
+
+    template<typename T>
+    static float getMinDist(const vector<T> &pts) {
+        // brute-force, no kd-tree or space splitting here
+        // TODO use something smarter
+        float minDist = std::numeric_limits<float>::max();
+        for(int i = 0; i < pts.size() - 1; ++i){
+            const T &p1 = pts[i];
+            for(int j = i + 1; j < pts.size(); ++j){
+                const T &p2 = pts[j];
+                float d = ofDist(p1.x, p1.y, p2.x, p2.y);
+                if(d < minDist) minDist = d;
+            }
+        }
+        return minDist + std::numeric_limits<float>::epsilon();
+    }
+    
+    void buildOptMesh(ofMesh &mesh){
       typedef unsigned int Index;
       ofxVec2fCompare comp(minDist);
       std::map<ofVec2f, Index, ofxVec2fCompare> vind(comp);
@@ -183,29 +181,36 @@ public:
       }
       mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     }
+    
+    void buildTrivialMesh(ofMesh &mesh){
+      typedef unsigned int Index;
 
-    void setMinDist(float mdist) {
-      minDist = mdist;
-    }
+      // register vertices
+      voro.resetIterator();
+      ofVec2f p[2];
+      ofVec2f s[2];
+      int sites;
 
-private:
-    VoronoiDiagramGenerator voro;
-    float minDist;
+      // register triangles = (index triplets)
+      // Note: 1st index = voronoi cell center
+      voro.resetIterator();
+      while(voro.getNext(p[0], p[1], s[0], s[1], sites)){
+        std::cout << ". graph edge (" << sites << " sites)\n";
+        Index i = mesh.getVertices().size();
+        // std::cout << "idx " << mesh.getIndices().size();
+        // std::cout << ", vtx " << mesh.getVertices().size() << "\n";
+        mesh.addVertex(ofVec3f(p[0]));
+        mesh.addVertex(ofVec3f(p[1]));
+        // std::cout << "e0 " << p[0] << ", e1 " << p[1] << "\n";
+        for(int j = 0; j < sites; ++j){
+          std::cout << "s" << j << " " << s[j] << "\n";
+          mesh.addVertex(ofVec3f(s[j]));
+          mesh.addTriangle(i + 2 + j, i, i + 1);
 
-    template<typename T>
-    static float getMinDist(const vector<T> &pts) {
-        // brute-force, no kd-tree or space splitting here
-        // TODO use something smarter
-        float minDist = std::numeric_limits<float>::max();
-        for(int i = 0; i < pts.size() - 1; ++i){
-            const T &p1 = pts[i];
-            for(int j = i + 1; j < pts.size(); ++j){
-                const T &p2 = pts[j];
-                float d = ofDist(p1.x, p1.y, p2.x, p2.y);
-                if(d < minDist) minDist = d;
-            }
         }
-        return minDist + std::numeric_limits<float>::epsilon();
+
+      }
+      mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     }
 };
 
