@@ -33,8 +33,8 @@ for(ofxSegmentIterator it = voronoi.edges(); it; ++it){
 ofMesh mesh;
 voronoi.buildMesh(mesh);
 mesh.setColorForIndices(0, mesh.getNumIndices(), ofFloatColor(1.0f, 1.0f, 1.0f));
-for(unsigned int i = 0; i < mesh.getNumIndices(); i += 3)
-  mesh.setColor(mesh.getIndex(i), ofFloatColor(0l0f, 0.0f, 1.0f)); // cell center
+for(unsigned int i = 0; i < mesh.getNumIndices(); i += 3){
+  mesh.setColor(mesh.getIndex(i), ofFloatColor(0.0f, 0.0f, 1.0f)); // cell centers
 }
 mesh.draw();
 ```
@@ -44,7 +44,7 @@ See also the interactive example applications in `example-simple/` and `example-
 TODO
 ----
   - optionally compute boundary faces for voronoi cells
-  - faster minDist computation (here brute-force = O(n²)
+  - faster minDist computation (here brute-force = O(n²) )
   - smarter point usage to avoid having to go through the points to split into xPts and yPts (or fix in original code)
 
 License
