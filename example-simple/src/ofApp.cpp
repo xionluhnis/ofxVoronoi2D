@@ -46,6 +46,7 @@ void ofApp::draw(){
   ofColor centerColor = ofColor(85, 78, 68);
   ofColor edgeColor(0, 0, 0);
   ofBackgroundGradient(centerColor, edgeColor, OF_GRADIENT_CIRCULAR);
+  if(count < 1) return;
 
   // draw circles
   for(unsigned int i = 0; i < pts.size(); ++i)
@@ -62,7 +63,6 @@ void ofApp::draw(){
       // mesh.draw(OF_MESH_WIREFRAME);
       break;
     case '3':
-      // 3d model
       //mesh.draw(OF_MESH_FILL);
       mesh.drawFaces();
       break;
@@ -83,7 +83,8 @@ void ofApp::keyPressed(int key){
     case 'c':
       pts.clear();
       mesh.clear();
-      count = 0;
+      count = 0; // commented to trigger voronoi update
+
       break;
     case 'f':
       ofToggleFullscreen();
