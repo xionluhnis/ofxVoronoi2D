@@ -29,6 +29,8 @@
 
 #include "VoronoiDiagramGenerator.h"
 
+namespace ofx {
+
 VoronoiDiagramGenerator::VoronoiDiagramGenerator()
 {
 	siteidx = 0;
@@ -1011,3 +1013,4 @@ int scomp(const void *p1,const void *p2)
 		return( ( Site *)NULL);
 }
 
+}
