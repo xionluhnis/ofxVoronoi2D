@@ -1,3 +1,0 @@
-ofxUI
-ofxVoronoi2D
-ofxXmlSettings

@@ -39,7 +39,7 @@ for(unsigned int i = 0; i < mesh.getNumIndices(); i += 3){
 mesh.draw();
 ```
 
-See also the interactive example applications in `example-simple/` and `example-withUI/`.
+See also the interactive example application in `example/`.
 
 TODO
 ----
