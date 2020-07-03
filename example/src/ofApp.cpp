@@ -50,7 +50,7 @@ void ofApp::draw(){
 
   // draw circles
   for(unsigned int i = 0; i < pts.size(); ++i)
-    ofCircle(pts[i].x, pts[i].y, 10);
+    ofDrawCircle(pts[i].x, pts[i].y, 10);
 
   switch(dispMode){
     case '1':
@@ -71,7 +71,7 @@ void ofApp::draw(){
       ofxSegmentIterator it = voronoi.edges();
       for(; it; ++it){
         ofxSegment e = *it;
-        ofLine(e.p1, e.p2);
+        ofDrawLine(e.p1, e.p2);
       }
   }
 }
